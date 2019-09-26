@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -21,7 +22,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex
             , HttpHeaders headers , HttpStatus status , WebRequest request){
-        Map<String,Object> body =new LinkedHashMap<>();
+        Map<String,Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("status",status.value());
         List<String> errors = ex.getBindingResult()
@@ -33,6 +34,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return  new ResponseEntity<>(body,headers,status);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public void constraintViolationException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value());
+    }
 
     @ExceptionHandler(BookNotFoundException.class)
     public void springHandleNotFound(HttpServletResponse response) throws IOException {

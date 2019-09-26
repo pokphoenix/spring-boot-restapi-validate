@@ -5,12 +5,14 @@ import com.poktest.spring.restapi.validate.error.BookUnSupportedFieldPatchExcept
 import com.poktest.spring.restapi.validate.model.Book;
 import com.poktest.spring.restapi.validate.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
 
@@ -32,12 +34,12 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    Book findOne(@PathVariable Long id){
+    Book findOne(@PathVariable @NumberFormat @Min(1) Long id){
         return repository.findById(id).orElseThrow(()-> new BookNotFoundException(id));
     }
 
     @PutMapping("/{id}")
-    Book saveOrUpdate(@RequestBody Book newBook,@PathVariable Long id){
+    Book saveOrUpdate(@RequestBody Book newBook,@PathVariable @NumberFormat @Min(1) Long id){
         return repository.findById(id).map(x->{
             x.setName(newBook.getName());
             x.setAuthor(newBook.getAuthor());
@@ -50,7 +52,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    Book patch(@RequestBody Map<String,String> update, @PathVariable Long id){
+    Book patch(@RequestBody Map<String,String> update, @PathVariable @NumberFormat @Min(1) Long id){
         return repository.findById(id).map(x->{
             String author  =  update.get("author");
             if(!StringUtils.isEmpty(author)){
@@ -65,7 +67,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Long id){
+    void delete(@PathVariable @NumberFormat @Min(1) Long id){
         repository.deleteById(id);
     }
 

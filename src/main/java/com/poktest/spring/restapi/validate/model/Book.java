@@ -1,5 +1,7 @@
 package com.poktest.spring.restapi.validate.model;
 
+import com.poktest.spring.restapi.validate.error.validator.Author;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ public class Book {
     @NotEmpty(message = "Please provide a name")
     private String name;
 
+    @Author
     @NotEmpty(message = "Please provide a author")
     private String author;
 
