@@ -26,19 +26,21 @@ class ApplicationTests {
 
 
 
-	@Mock
-	private BookRepository repo;
+//	@Mock
+//	private BookRepository repo;
+//
+//	@InjectMocks
+//	BookService bookService ;
+//
+//	@BeforeEach
+//	void setMockOutput() {
+//		List<Book> bookList = new ArrayList<>();
+//		bookList.add(new Book("A Guide to the Bodhisattva Way of Life", "Santideva", new BigDecimal("15.41")));
+//		when(repo.findAll()).thenReturn(bookList);
+//	}
 
-	@InjectMocks
-	BookService bookService ;
-
-	@BeforeEach
-	void setMockOutput() {
-		List<Book> bookList = new ArrayList<>();
-		bookList.add(new Book("A Guide to the Bodhisattva Way of Life", "Santideva", new BigDecimal("15.41")));
-		when(repo.findAll()).thenReturn(bookList);
-	}
-
+	@Autowired
+	private BookService bookService;
 
 	@DisplayName("Test Spring @Autowired Integration")
 	@Test
@@ -46,10 +48,10 @@ class ApplicationTests {
 		List<Book> bookList = bookService.get();
 //		assertThat(bookList.size(),greaterThan(2));
 		assertThat(bookList.size(),greaterThan(0)); // true
-		bookList.forEach(s->{
-			assertEquals("Santideva", s.getAuthor()); // true
+//		bookList.forEach(s->{
+//			assertEquals("Santideva", s.getAuthor()); // true
 //			assertNotEquals("Santideva", s.getAuthor());
-		});
+//		});
 	}
 
 
